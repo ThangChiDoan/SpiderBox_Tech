@@ -1,17 +1,17 @@
-import { CreateUserForm } from "components/posts/CreateUserForm";
 import { CloseModalIcon } from "icons/CloseModalIcon";
 import { observer } from "mobx-react-lite";
 import { IModal } from "pages/Home";
-import SVGButton from "./button/SVGButton";
+import React from "react";
+import SVGButton from "../button/SVGButton";
 
-interface ModalProps {
-  modal: IModal;
+interface EditModalProps {
+  data: IModal;
 }
 
-const Modal: React.FC<ModalProps> = observer(({ modal }) => {
+const EditModal: React.FC<EditModalProps> = observer(({ data }) => {
   return (
     <div className="mb-4">
-      {modal.isShowModal && (
+      {data.isShowModal && (
         <div
           id="defaultModal"
           tabIndex={-1}
@@ -24,14 +24,12 @@ const Modal: React.FC<ModalProps> = observer(({ modal }) => {
                 <h3 className="text-xl font-semibold text-gray-900 dark:">
                   Create a new user
                 </h3>
-                <SVGButton onClick={modal.setIsShowModal}>
+                <SVGButton onClick={data.setIsShowModal}>
                   <CloseModalIcon />
                 </SVGButton>
               </div>
 
-              <div className="px-6 pt-2 pb-6">
-                <CreateUserForm />
-              </div>
+              <div className="px-6 pt-2 pb-6">Edit form body</div>
 
               {/* TODO: submit button */}
               <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
@@ -45,7 +43,7 @@ const Modal: React.FC<ModalProps> = observer(({ modal }) => {
                 <button
                   type="button"
                   className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover: dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                  onClick={modal.setIsShowModal}
+                  onClick={data.setIsShowModal}
                 >
                   Close
                 </button>
@@ -58,4 +56,4 @@ const Modal: React.FC<ModalProps> = observer(({ modal }) => {
   );
 });
 
-export default Modal;
+export default EditModal;

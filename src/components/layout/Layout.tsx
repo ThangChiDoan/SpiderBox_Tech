@@ -7,7 +7,7 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="container w-screen h-full text-white">
+    <div className="container w-screen h-full">
       <Header />
       {children}
     </div>

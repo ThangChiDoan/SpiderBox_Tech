@@ -1,13 +1,19 @@
-import { UserRequest } from "api/users";
+import AlternativeButton from "components/common/button/AlternativeButton";
+import DefaultButton from "components/common/button/DefaultButton";
+import { useHomePageStore } from "context/pages/HomePageContext";
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Link } from "react-router-dom";
+import { UserRequest } from "types/api/users";
 
 interface UserRequestProps {
   user: UserRequest;
 }
 
-const UserProfileCard: React.FC<UserRequestProps> = ({ user }) => {
+const UserProfileCard: React.FC<UserRequestProps> = observer(({ user }) => {
   const { first_name, last_name, email, image } = user;
+
+  const { editModal } = useHomePageStore();
 
   return (
     <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
@@ -20,7 +26,7 @@ const UserProfileCard: React.FC<UserRequestProps> = ({ user }) => {
             <li>
               <Link
                 to="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:"
               >
                 Edit
               </Link>
@@ -28,7 +34,7 @@ const UserProfileCard: React.FC<UserRequestProps> = ({ user }) => {
             <li>
               <Link
                 to="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:"
               >
                 Export Data
               </Link>
@@ -36,7 +42,7 @@ const UserProfileCard: React.FC<UserRequestProps> = ({ user }) => {
             <li>
               <Link
                 to="#"
-                className="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:"
               >
                 Delete
               </Link>
@@ -50,29 +56,19 @@ const UserProfileCard: React.FC<UserRequestProps> = ({ user }) => {
           src={image}
           alt="user profile"
         />
-        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:">
           {`${first_name} ${last_name}`}
         </h5>
         <span className="text-sm text-gray-500 dark:text-gray-400">
           {email}
         </span>
         <div className="flex mt-4 space-x-3 md:mt-6">
-          <Link
-            to="#"
-            className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Add friend
-          </Link>
-          <Link
-            to="#"
-            className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
-          >
-            Message
-          </Link>
+          <DefaultButton content="Detail" onClick={editModal.setIsShowModal} />
+          <AlternativeButton content="Delete" onClick={() => {}} />
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default UserProfileCard;

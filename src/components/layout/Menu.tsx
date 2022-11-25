@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Menu = () => {
   return (
-    <div className="flex space-x-4 text-white">
+    <div className="flex space-x-4 ">
       <div>
         <Link to="todo-list">Todo list</Link>
       </div>

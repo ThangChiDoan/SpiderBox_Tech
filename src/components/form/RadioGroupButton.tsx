@@ -10,7 +10,7 @@ export const RadioGroupButton: React.FC<RadioGroupButtonProps> = ({
 }) => {
   return (
     <div className="mb-6">
-      <p className="block mb-4 text-base font-medium text-gray-900 dark:text-white">
+      <p className="block mb-4 text-base font-medium text-gray-900 dark:">
         {label}
       </p>
       {children}

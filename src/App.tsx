@@ -14,7 +14,7 @@ const store = new TodoList([
 
 export const App = () => {
   return (
-    <div className="App bg-gray-800 font-sans">
+    <div className="App bg-slate-800 font-sans text-white">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="todo-list" element={<TodoListView todoList={store} />} />

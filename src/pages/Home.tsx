@@ -5,15 +5,16 @@ import { action } from "mobx";
 import { observer, useLocalObservable } from "mobx-react-lite";
 // components
 import Button from "components/common/Button";
-import DefaultButton from "components/common/button/DefaultButton";
 import Modal from "components/common/Modal";
-import { DeleteModal } from "components/common/modal/DeleteModal";
-import EditModal from "components/common/modal/EditModal";
 import { Layout } from "components/layout/Layout";
 import { UserProfileList } from "components/users/UserProfileList";
 // types
 import { UserRequest } from "types/api/users";
+import EditModal from "components/common/modal/EditModal";
+import { DeleteModal } from "components/common/modal/DeleteModal";
 import { HomePageProvider } from "context/pages/HomePageContext";
+import { useState } from "react";
+import Select from "react-tailwindcss-select";
 
 export interface IModal {
   isShowModal: boolean;
@@ -56,6 +57,27 @@ const Home = observer(() => {
     },
   }));
 
+  const [userSelected, setUserSelected] = useState<Partial<UserRequest>>({});
+
+  const options = [
+    { value: "fox", label: "🦊 Fox" },
+    { value: "butterfly", label: "🦋 Butterfly" },
+    { value: "honeybee", label: "🐝 Honeybee" },
+  ];
+
+  interface Option {
+    value: string;
+    label: string;
+    disabled?: boolean;
+    isSelected?: boolean;
+  }
+
+  const [animal, setAnimal] = useState<Option | Option[] | null>(null);
+
+  const handleChange = (value: Option | Option[] | null) => {
+    setAnimal(value);
+  };
+
   if (isLoading) {
     return <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24" />;
   }
@@ -65,23 +87,29 @@ const Home = observer(() => {
   }
 
   return (
-    <HomePageProvider value={{ editModal, deleteModal }}>
+    <HomePageProvider
+      value={{ editModal, deleteModal, userSelected, setUserSelected }}
+    >
       <Layout>
         <div className="flex justify-between items-center w-full mb-4">
           <h1 className="font-bold text-2xl">Home page</h1>
-          <DefaultButton
-            content="Delete"
-            onClick={action(() => deleteModal.setIsShowModal())}
-          />
-          <Button
-            content="Create new user"
-            onClick={action(() => modal.setIsShowModal())}
-          />
+          <div className="flex gap-4">
+            <Select
+              primaryColor="black"
+              value={animal}
+              onChange={(value) => handleChange(value!)}
+              options={options}
+            />
+            <Button
+              content="Create new user"
+              onClick={action(() => modal.setIsShowModal())}
+            />
+          </div>
         </div>
+        <UserProfileList data={data} />
         <Modal modal={modal} />
         <EditModal data={editModal} />
         <DeleteModal data={deleteModal} />
-        <UserProfileList data={data} />
       </Layout>
     </HomePageProvider>
   );

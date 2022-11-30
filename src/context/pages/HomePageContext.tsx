@@ -1,11 +1,14 @@
 import { IModal } from "pages/Home";
-import { createContext, useContext } from "react";
+import { createContext, Dispatch, SetStateAction, useContext } from "react";
+import { UserRequest } from "types/api/users";
 
 interface HomePageProviderProps {
   children: JSX.Element | JSX.Element[];
   value: {
     editModal: IEditModal;
     deleteModal: IDeleteModal;
+    userSelected: Partial<UserRequest>;
+    setUserSelected: Dispatch<SetStateAction<Partial<UserRequest>>>;
   };
 }
 
@@ -17,6 +20,8 @@ const HomePageStore = createContext(
   {} as {
     editModal: IEditModal;
     deleteModal: IDeleteModal;
+    userSelected: Partial<UserRequest>;
+    setUserSelected: Dispatch<SetStateAction<Partial<UserRequest>>>;
   }
 );
 

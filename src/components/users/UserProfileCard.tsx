@@ -3,7 +3,7 @@ import DefaultButton from "components/common/button/DefaultButton";
 import { useHomePageStore } from "context/pages/HomePageContext";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { UserRequest } from "types/api/users";
 
 interface UserRequestProps {
@@ -13,7 +13,9 @@ interface UserRequestProps {
 const UserProfileCard: React.FC<UserRequestProps> = observer(({ user }) => {
   const { first_name, last_name, email, image } = user;
 
-  const { editModal } = useHomePageStore();
+  const { editModal, deleteModal, setUserSelected } = useHomePageStore();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   return (
     <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
@@ -63,8 +65,22 @@ const UserProfileCard: React.FC<UserRequestProps> = observer(({ user }) => {
           {email}
         </span>
         <div className="flex mt-4 space-x-3 md:mt-6">
-          <DefaultButton content="Detail" onClick={editModal.setIsShowModal} />
-          <AlternativeButton content="Delete" onClick={() => {}} />
+          <DefaultButton
+            content="Detail"
+            onClick={() => {
+              editModal.setIsShowModal();
+              setUserSelected(user);
+              searchParams.set("user-id", user.id.toString());
+              setSearchParams(searchParams);
+            }}
+          />
+          <AlternativeButton
+            content="Delete"
+            onClick={() => {
+              deleteModal.setIsShowModal();
+              setUserSelected(user);
+            }}
+          />
         </div>
       </div>
     </div>

@@ -76,10 +76,10 @@ export const CreateUserForm: React.FC = () => {
           <Input
             label="Last name"
             type="string"
-            htmlFor="last_time"
-            id="last_time"
+            htmlFor="last_name"
+            id="last_name"
             placeholder="Enter last name"
-            registerName="last_time"
+            registerName="last_name"
             validationRules={{ required: true }}
             validationContent="This field is required!"
           />

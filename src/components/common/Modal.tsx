@@ -1,4 +1,4 @@
-import { CreateUserForm } from "components/posts/CreateUserForm";
+import { CreateUserForm } from "components/users/CreateUserForm";
 import { CloseModalIcon } from "icons/CloseModalIcon";
 import { observer } from "mobx-react-lite";
 import { IModal } from "pages/Home";

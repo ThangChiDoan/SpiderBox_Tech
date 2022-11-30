@@ -1,7 +1,13 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteUsersRequest, getUsersRequest } from "api/users";
+import { useHomePageStore } from "context/pages/HomePageContext";
 import { CloseModalIcon } from "icons/CloseModalIcon";
+import DeleteModalIcon from "icons/DeleteModalIcon";
 import { observer } from "mobx-react-lite";
 import { IDeleteModal } from "pages/Home";
 import React from "react";
+import { toast } from "react-toastify";
+import { UserRequest } from "types/api/users";
 import AlternativeButton from "../button/AlternativeButton";
 import RedButton from "../button/RedButton";
 import SVGButton from "../button/SVGButton";
@@ -11,6 +17,25 @@ interface DeleteModalProps {
 }
 
 export const DeleteModal: React.FC<DeleteModalProps> = observer(({ data }) => {
+  const { userSelected } = useHomePageStore();
+
+  const { refetch } = useQuery<UserRequest[], Error>({
+    queryKey: ["users"],
+    queryFn: getUsersRequest,
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: deleteUsersRequest,
+    onSuccess: () => {
+      toast.success("Delete success!");
+      refetch();
+    },
+    onError: () => {
+      toast.error("Delete fail!");
+      refetch();
+    },
+  });
+
   return (
     <>
       {data?.isShowModal && (
@@ -25,25 +50,18 @@ export const DeleteModal: React.FC<DeleteModalProps> = observer(({ data }) => {
                 <CloseModalIcon />
               </SVGButton>
               <div className="p-6 text-center">
-                <svg
-                  aria-hidden="true"
-                  className="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
+                <DeleteModalIcon />
                 <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                  Are you sure you want to delete this product?
+                  Are you sure you want to delete user{" "}
+                  {`${userSelected.first_name}`}?
                 </h3>
-                <RedButton content="Yes, I'm sure" />
+                <RedButton
+                  content="Yes, I'm sure"
+                  onClick={() => {
+                    mutate(userSelected.id!);
+                    data?.setIsShowModal();
+                  }}
+                />
                 <AlternativeButton
                   content="No, cancel"
                   onClick={data?.setIsShowModal}
